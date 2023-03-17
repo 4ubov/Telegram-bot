@@ -1,6 +1,6 @@
 package com.chubov.SpringTelegramBot.configs;
 
-import com.chubov.SpringTelegramBot.controllers.FoodTelegramBot;
+import com.chubov.SpringTelegramBot.telegramBotStarter.FoodTelegramBot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;

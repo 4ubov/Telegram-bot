@@ -1,4 +1,4 @@
-package com.chubov.SpringTelegramBot.controllers;
+package com.chubov.SpringTelegramBot.telegramBotStarter;
 
 import com.chubov.SpringTelegramBot.DTO.UserDTO;
 import com.chubov.SpringTelegramBot.configs.BotConfig;

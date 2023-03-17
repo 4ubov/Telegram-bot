@@ -6,20 +6,14 @@ import com.chubov.SpringTelegramBot.models.Role;
 import com.chubov.SpringTelegramBot.models.User;
 import com.chubov.SpringTelegramBot.repositories.RoleRepository;
 import com.chubov.SpringTelegramBot.repositories.UserRepository;
-import com.chubov.SpringTelegramBot.utils.Buttons;
+import com.chubov.SpringTelegramBot.telegramBotStarter.utils.Buttons;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import java.util.List;
@@ -97,7 +91,7 @@ public class UserService {
         //  Send Text + button response
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
-        message.setText("https://b652-46-34-193-75.eu.ngrok.io Здравствуйте, " + firstName + "! " + "\nВы являетесь администратором бота." + "\nНажмите на кнопку ниже, для настроки бота.");
+        message.setText("https://98e0-46-34-193-235.eu.ngrok.io Здравствуйте, " + firstName + "! " + "\nВы являетесь администратором бота." + "\nНажмите на кнопку ниже, для настроки бота.");
         message.setReplyMarkup(Buttons.inlineMarkup());
         return message;
     }
