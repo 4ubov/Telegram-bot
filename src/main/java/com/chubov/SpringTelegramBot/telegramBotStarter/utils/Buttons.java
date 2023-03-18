@@ -11,12 +11,13 @@ import java.util.List;
 public class Buttons {
     private static final InlineKeyboardButton ADMIN_BOT_SETTINGS = new InlineKeyboardButton("Настройки бота");
 
-    public static InlineKeyboardMarkup inlineMarkup() {
+    public static InlineKeyboardMarkup inlineMarkup(Long telegramId) {
         // Button response
         WebAppInfo webAppInfo = new WebAppInfo();
-        webAppInfo.setUrl("https://pretendent.kz/main.html");
+        String url = "https://vk.com";
+        webAppInfo.setUrl(url);
         ADMIN_BOT_SETTINGS.setWebApp(webAppInfo);
-//        ADMIN_BOT_SETTINGS.setCallbackData("Вы нажали на кнопу - Настройки бота! ");
+//        ADMIN_BOT_SETTINGS.setCallbackData(ADMIN_BOT_SETTINGS.getUrl());
 
         List<InlineKeyboardButton> rowInline = List.of(ADMIN_BOT_SETTINGS);
         List<List<InlineKeyboardButton>> rowsInLine = List.of(rowInline);

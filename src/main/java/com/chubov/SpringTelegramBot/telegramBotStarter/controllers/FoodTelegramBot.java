@@ -29,6 +29,7 @@ public class FoodTelegramBot extends TelegramLongPollingBot {
 
     final ModelMapper modelMapper;
 
+
     @Autowired
     public FoodTelegramBot(BotConfig botConfig, UserService userService, ModelMapper modelMapper) {
         this.botConfig = botConfig;
@@ -72,7 +73,6 @@ public class FoodTelegramBot extends TelegramLongPollingBot {
             //  Init Session
             if (update.getMessage().hasText()) {
                 //  Текст сообщения в чате
-
                 receivedMessage = update.getMessage().getText();
                 botAnswerUtils(receivedMessage, chatId, userId, username, firstName);
             }
@@ -84,16 +84,18 @@ public class FoodTelegramBot extends TelegramLongPollingBot {
             firstName = update.getCallbackQuery().getFrom().getFirstName();
             username = update.getCallbackQuery().getFrom().getUserName();
             receivedMessage = update.getCallbackQuery().getData();
-
             botAnswerUtils(receivedMessage, chatId, userId, username, firstName);
         }
     }
 
     private void botAnswerUtils(String receivedMessage, long chatId, Long userId, String username, String firstName) {
         //  Save new user, or update user data, or do nothing
-        userService.saveNewUser(userId, username, firstName);
+        User user = userService.saveNewUser(userId, username, firstName);
         //  Get user role
         String role = userService.getUserRole(userId);
+
+        //  Set Session
+
         //  Do different response by dependency of user role
         switch (role) {
             //  ADMIN functional
@@ -132,6 +134,7 @@ public class FoodTelegramBot extends TelegramLongPollingBot {
             log.error(e.getMessage());
         }
     }
+
 
     //  ModelMapper methods. Converters.
     private User convertToUser(UserDTO userDTO) {

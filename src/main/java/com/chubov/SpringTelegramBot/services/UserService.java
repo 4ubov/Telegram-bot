@@ -28,14 +28,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
-    private final HttpSession session;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper, HttpSession session) {
+    public UserService(UserRepository userRepository,
+                       RoleRepository roleRepository,
+                       ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.modelMapper = modelMapper;
-        this.session = session;
     }
 
     //  Add a new User to database
@@ -91,8 +91,8 @@ public class UserService {
         //  Send Text + button response
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
-        message.setText("https://98e0-46-34-193-235.eu.ngrok.io Здравствуйте, " + firstName + "! " + "\nВы являетесь администратором бота." + "\nНажмите на кнопку ниже, для настроки бота.");
-        message.setReplyMarkup(Buttons.inlineMarkup());
+        message.setText("Здравствуйте, " + firstName + "! " + "\nВы являетесь администратором бота." + "\nНажмите на кнопку ниже, для настроки бота.");
+        message.setReplyMarkup(Buttons.inlineMarkup(userId));
         return message;
     }
 
