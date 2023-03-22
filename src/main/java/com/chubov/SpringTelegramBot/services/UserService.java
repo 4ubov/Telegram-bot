@@ -40,7 +40,9 @@ public class UserService {
         Optional<User> user = userRepository.findByTelegramId(userId);
         if (user.isPresent()) {
             //  Check if user data is updated, update database
-            UserDTO validUserDto = new UserDTO(userId, username, firstName, user.get().getRoles().stream().map(this::convertToRoleDTO).collect(Collectors.toSet()));
+            UserDTO validUserDto =
+                    new UserDTO(userId, username, firstName,
+                            user.get().getRoles().stream().map(this::convertToRoleDTO).collect(Collectors.toSet()));
             UserDTO userDTO = convertToUserDTO(user.get());
             if (!userDTO.equals(validUserDto) && userDTO.getTelegramId().equals(validUserDto.getTelegramId())) {
                 //  Update data
@@ -78,13 +80,10 @@ public class UserService {
         if (user.isPresent()) {
             return user.get().getRoles().stream().findAny().get().getRoleName();
         }
-        throw new EntityNotFoundException();
+        throw new EntityNotFoundException("User with id: " + telegramId + " , not found!");
     }
 
     public SendMessage startBot(String receivedMessage, Long chatId, Long userId, String username, String firstName) {
-//        Optional<User> user = getUser(userId);
-//        String role = getUserRole(userId);
-
         //  Send Text + button response
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
@@ -142,12 +141,13 @@ public class UserService {
             userRepository.save(user.get());
             return;
         }
-        throw new EntityNotFoundException();
+        throw new EntityNotFoundException("The User you submitted was not found!");
     }
 
     //  Return count of users (people in db with a role - USER)
     public Integer getCountUsers() {
-        return userRepository.countUsersByRoles(roleRepository.findByRoleName("USER").stream().findAny().get());
+        return roleRepository.findByRoleName("USER")
+                .stream().findFirst().get().getUsers().size();
     }
 
 }

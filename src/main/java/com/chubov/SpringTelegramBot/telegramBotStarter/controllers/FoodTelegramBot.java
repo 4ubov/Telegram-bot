@@ -92,9 +92,7 @@ public class FoodTelegramBot extends TelegramLongPollingBot {
         //  Save new user, or update user data, or do nothing
         User user = userService.saveNewUser(userId, username, firstName);
         //  Get user role
-        String role = userService.getUserRole(userId);
-
-        //  Set Session
+        String role = user.getRoles().stream().findAny().get().getRoleName();
 
         //  Do different response by dependency of user role
         switch (role) {

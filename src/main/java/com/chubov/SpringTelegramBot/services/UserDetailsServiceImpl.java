@@ -28,7 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String telegramId) throws EntityNotFoundException {
         // Retrieve the user from the database using their id
-        User user = userRepository.findByTelegramId(Long.parseLong(telegramId)).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        User user = userRepository.findByTelegramId(Long.parseLong(telegramId))
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         // Create a UserDetails object using the user's information
         List<GrantedAuthority> authorities = new ArrayList<>();

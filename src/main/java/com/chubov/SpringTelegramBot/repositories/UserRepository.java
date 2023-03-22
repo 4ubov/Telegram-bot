@@ -12,6 +12,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByTelegramId(Long userId);
 
     Optional<User> findByUsername(String username);
-
-    Integer countUsersByRoles(Role role);
 }
