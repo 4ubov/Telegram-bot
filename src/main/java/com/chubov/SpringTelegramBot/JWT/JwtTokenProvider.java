@@ -25,7 +25,7 @@ public class JwtTokenProvider {
 
     //  Base64 secretKey
 
-    private final static String SECRET_KEY = "oUdzcb5tXY8+k6LZfV6pv2ZJlZGjF/bXiQ1tiPg+Wz0=";
+    private final static String SECRET_KEY = "YourSecretKeyDontContainItInJavaClass";
 
     private final static Long EXPIRATION_TIME = 3600000L;
 
@@ -52,10 +52,6 @@ public class JwtTokenProvider {
         return Jwts.builder().setClaims(claims).setIssuedAt(now).setExpiration(expiryDate).signWith(key).compact();
     }
 
-//    public Authentication getAuthentication(String token) {
-//        UserDetails userDetails = this.userDetailsService.loadUserByUsername(String.valueOf(getTelegramIdFromToken(token)));
-//        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-//    }
 
     public boolean validateToken(String token, UserDetails userDetails) {
         String croppedToken = resolveToken(token);
