@@ -1,11 +1,12 @@
 package com.chubov.SpringTelegramBot.controllers;
 
 import com.chubov.SpringTelegramBot.DTO.UserDTO;
+import com.chubov.SpringTelegramBot.JWT.JwtTokenProvider;
 import com.chubov.SpringTelegramBot.services.UserService;
+import jakarta.ws.rs.BadRequestException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +17,12 @@ public class AdminController {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
+    private final JwtTokenProvider jwtTokenProvider;
     @Autowired
-    public AdminController(ModelMapper modelMapper, UserService userService) {
+    public AdminController(ModelMapper modelMapper, UserService userService, JwtTokenProvider jwtTokenProvider) {
         this.modelMapper = modelMapper;
         this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     //  Установка роли Customer
@@ -70,15 +73,16 @@ public class AdminController {
 
     //  Получить количество пользователей бота (ROLE: USER)
     @GetMapping("/get-count-users")
-    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public Integer getCountUsers() {
+    public Integer getCountUsers(@RequestHeader("Authorization") String token) {
+        if (!jwtTokenProvider.isValidAndAdmin(token)) {
+            throw new BadRequestException("Invalid token, or you're dont have access");
+        }
         return userService.getCountUsers();
     }
 
     //  Получить всех пользователей (ADMIN, CUSTOMER, USER)
     @GetMapping("/get-all-users")
-    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> getAllUsers() {
         return userService.getAllUser();

@@ -9,12 +9,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
@@ -31,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // Create a UserDetails object using the user's information
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role : user.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
         }
 
         return new org.springframework.security.core.userdetails.User(String.valueOf(user.getTelegramId()), "", authorities);

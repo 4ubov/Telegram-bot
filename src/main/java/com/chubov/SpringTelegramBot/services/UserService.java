@@ -8,7 +8,6 @@ import com.chubov.SpringTelegramBot.repositories.RoleRepository;
 import com.chubov.SpringTelegramBot.repositories.UserRepository;
 import com.chubov.SpringTelegramBot.telegramBotStarter.utils.Buttons;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +29,7 @@ public class UserService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository,
-                       RoleRepository roleRepository,
-                       ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.modelMapper = modelMapper;
