@@ -3,6 +3,7 @@ package com.chubov.SpringTelegramBot.controllers;
 import com.chubov.SpringTelegramBot.DTO.UserDTO;
 import com.chubov.SpringTelegramBot.JWT.JwtTokenProvider;
 import com.chubov.SpringTelegramBot.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.BadRequestException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +75,8 @@ public class AdminController {
     //  Получить количество пользователей бота (ROLE: USER)
     @GetMapping("/get-count-users")
     @ResponseStatus(HttpStatus.OK)
-    public Integer getCountUsers(@RequestHeader("Authorization") String token) {
-        if (!jwtTokenProvider.isValidAndAdmin(token)) {
+    public Integer getCountUsers(HttpServletRequest request) {
+        if (!jwtTokenProvider.isValidAndAdmin(request)) {
             throw new BadRequestException("Invalid token, or you're dont have access");
         }
         return userService.getCountUsers();
