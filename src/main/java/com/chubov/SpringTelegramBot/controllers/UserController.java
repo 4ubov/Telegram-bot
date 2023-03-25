@@ -1,10 +1,10 @@
 package com.chubov.SpringTelegramBot.controllers;
 
+
 import com.chubov.SpringTelegramBot.JWT.JwtTokenProvider;
 import com.chubov.SpringTelegramBot.models.User;
 import com.chubov.SpringTelegramBot.services.UserDetailsServiceImpl;
 import com.chubov.SpringTelegramBot.services.UserService;
-import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @RestController

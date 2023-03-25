@@ -1,5 +1,6 @@
 package com.chubov.SpringTelegramBot.controllers;
 
+
 import com.chubov.SpringTelegramBot.DTO.UserDTO;
 import com.chubov.SpringTelegramBot.JWT.JwtTokenProvider;
 import com.chubov.SpringTelegramBot.services.UserService;
@@ -68,14 +69,23 @@ public class AdminController {
 
     //  Получить отчёт о продажах
     @GetMapping("/get-reports")
-    public void getReport() {
-
+    public String getReport() {
+        return "Report";
     }
 
     //  Получить количество пользователей бота (ROLE: USER)
-    @GetMapping("/get-count-users")
+    @PostMapping("/get-count-users")
     @ResponseStatus(HttpStatus.OK)
     public Integer getCountUsers(HttpServletRequest request) {
+        if (!jwtTokenProvider.isValidAndAdmin(request)) {
+            throw new BadRequestException("Invalid token, or you're dont have access");
+        }
+        return userService.getCountUsers();
+    }
+
+    @GetMapping("/get-count-users")
+    @ResponseStatus(HttpStatus.OK)
+    public Integer getCountUsers1(HttpServletRequest request) {
         if (!jwtTokenProvider.isValidAndAdmin(request)) {
             throw new BadRequestException("Invalid token, or you're dont have access");
         }

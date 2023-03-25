@@ -7,7 +7,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.Authentication;
@@ -28,7 +27,7 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
 
     //  Base64 secretKey
-    private final static String SECRET_KEY = "doNotStoreSecretKeyInJavaFile";
+    private final static String SECRET_KEY = "oUdzcb5tXY8+k6LZfV6pv2ZJlZGjF/bXiQ1tiPg+Wz0=";
 
     private final static Long EXPIRATION_TIME = 3600000L;
     Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
