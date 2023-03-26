@@ -4,6 +4,7 @@ import com.chubov.SpringTelegramBot.services.UserDetailsServiceImpl;
 import com.chubov.SpringTelegramBot.utils.BadTokenException;
 import com.chubov.SpringTelegramBot.utils.MissingHeaderException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
@@ -79,14 +80,17 @@ public class JwtTokenProvider {
     //
     public UserDetails getUserDetailsFromToken(String token) {
         token = resolveToken(token);
-        Claims claims =
-                Jwts.parserBuilder().setSigningKey(SECRET_KEY.getBytes()).build().parseClaimsJws(token).getBody();
-
+        try {
+            Claims claims =
+                    Jwts.parserBuilder().setSigningKey(SECRET_KEY.getBytes()).build().parseClaimsJws(token).getBody();
         String subject = claims.getSubject();
         List<String> authorities = (List<String>) claims.get("authorities");
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
         return new User(userDetails.getUsername(), userDetails.getPassword(), authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+    }catch (ExpiredJwtException exception){
+        throw exception;
+        }
     }
 
     public boolean isValidAndAdmin(HttpServletRequest request) {

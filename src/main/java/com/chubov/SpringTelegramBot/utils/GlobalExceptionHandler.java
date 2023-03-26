@@ -1,5 +1,6 @@
 package com.chubov.SpringTelegramBot.utils;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<ErrorResponse> catchExpiredJwtTokenException(ExpiredJwtException e) {
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(),
+                "Token is expired!",
+                System.currentTimeMillis()
+        ), HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler
     public ResponseEntity<ErrorResponse> catchResourceNotFoundException(BadTokenException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(),
                 e.getMessage(),
                 System.currentTimeMillis()
-        ), HttpStatus.BAD_REQUEST);
+        ), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler

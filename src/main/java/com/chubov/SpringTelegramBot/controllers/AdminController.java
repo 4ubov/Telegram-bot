@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -85,11 +87,13 @@ public class AdminController {
 
     @GetMapping("/get-count-users")
     @ResponseStatus(HttpStatus.OK)
-    public Integer getCountUsers1(HttpServletRequest request) {
+    public Map<String, Integer> getCountUsers1(HttpServletRequest request) {
         if (!jwtTokenProvider.isValidAndAdmin(request)) {
             throw new BadRequestException("Invalid token, or you're dont have access");
         }
-        return userService.getCountUsers();
+        Map<String, Integer> response = new HashMap<>();
+        response.put("count",userService.getCountUsers());
+        return response;
     }
 
     //  Получить всех пользователей (ADMIN, CUSTOMER, USER)
