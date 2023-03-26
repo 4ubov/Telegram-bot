@@ -5,17 +5,19 @@ import com.chubov.SpringTelegramBot.JWT.JwtTokenProvider;
 import com.chubov.SpringTelegramBot.models.User;
 import com.chubov.SpringTelegramBot.services.UserDetailsServiceImpl;
 import com.chubov.SpringTelegramBot.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -36,16 +38,20 @@ public class UserController {
     }
 
     @PostMapping("/api/get-token")
-    public String getToken(@RequestBody Long tgId) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(tgId));
+    @ResponseStatus(HttpStatus.OK)
+    public Map<String, String> getToken(@RequestBody Long telegramId) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(telegramId));
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-        return jwtTokenProvider.generateToken(authentication);
+        Map<String, String> response = new HashMap<>();
+        response.put("token", jwtTokenProvider.generateToken(authentication));
+        return response;
     }
 
-    @PostMapping("/api/get-role")
-    public String getRole(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader;
-        Long telegramId = JwtTokenProvider.getTelegramIdFromToken(token);
+    @GetMapping("/api/get-role")
+    @ResponseStatus(HttpStatus.OK)
+    public Map<String, String> getRole(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        Long telegramId = jwtTokenProvider.getTelegramIdFromToken(token);
         assert telegramId != null;
         Optional<User> user = userService.getUser(telegramId);
         if (user.isEmpty()) {
@@ -53,6 +59,8 @@ public class UserController {
         }
         String role = user.get().getRoles().stream().findAny().get().getRoleName();
 
-        return role;
+        Map<String, String> response = new HashMap<>();
+        response.put("role", role);
+        return response;
     }
 }

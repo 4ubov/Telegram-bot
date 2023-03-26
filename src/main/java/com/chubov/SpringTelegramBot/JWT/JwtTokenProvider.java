@@ -3,10 +3,13 @@ package com.chubov.SpringTelegramBot.JWT;
 import com.chubov.SpringTelegramBot.services.UserDetailsServiceImpl;
 import com.chubov.SpringTelegramBot.utils.BadTokenException;
 import com.chubov.SpringTelegramBot.utils.MissingHeaderException;
+import com.fasterxml.jackson.core.io.JsonEOFException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -64,9 +67,9 @@ public class JwtTokenProvider {
     }
 
     //  Parse JWT and extract Telegram ID claim
-    public static Long getTelegramIdFromToken(String token) {
+    public Long getTelegramIdFromToken(String token) {
         token = resolveToken(token);
-        Claims claims = Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         return Long.parseLong(claims.getSubject());
     }
 
@@ -74,23 +77,19 @@ public class JwtTokenProvider {
         if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
             return token.substring(7).trim();
         }
-        throw new BadTokenException("Invalid token");
+        throw new BadTokenException("Invalid token. Empty, or dont have Bearer prefix!");
     }
 
     //
     public UserDetails getUserDetailsFromToken(String token) {
         token = resolveToken(token);
-        try {
             Claims claims =
-                    Jwts.parserBuilder().setSigningKey(SECRET_KEY.getBytes()).build().parseClaimsJws(token).getBody();
-        String subject = claims.getSubject();
-        List<String> authorities = (List<String>) claims.get("authorities");
+                    Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+            String subject = claims.getSubject();
+            List<String> authorities = (List<String>) claims.get("authorities");
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
-        return new User(userDetails.getUsername(), userDetails.getPassword(), authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
-    }catch (ExpiredJwtException exception){
-        throw exception;
-        }
+            UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
+            return new User(userDetails.getUsername(), userDetails.getPassword(), authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
     }
 
     public boolean isValidAndAdmin(HttpServletRequest request) {

@@ -30,9 +30,9 @@ public class AdminController {
     }
 
     //  Установка роли Customer
-    //  Throw EntityNotFoundException
-    @PostMapping("/set-customer")
-    @ResponseStatus(HttpStatus.CREATED)
+    //  Throws EntityNotFoundException
+    @PutMapping("/set-customer")
+    @ResponseStatus(HttpStatus.OK)
     public void setCustomer(@RequestBody UserDTO request) {
         userService.setCustomer(request);
     }
@@ -76,18 +76,9 @@ public class AdminController {
     }
 
     //  Получить количество пользователей бота (ROLE: USER)
-    @PostMapping("/get-count-users")
-    @ResponseStatus(HttpStatus.OK)
-    public Integer getCountUsers(HttpServletRequest request) {
-        if (!jwtTokenProvider.isValidAndAdmin(request)) {
-            throw new BadRequestException("Invalid token, or you're dont have access");
-        }
-        return userService.getCountUsers();
-    }
-
     @GetMapping("/get-count-users")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Integer> getCountUsers1(HttpServletRequest request) {
+    public Map<String, Integer> getCountUsers(HttpServletRequest request) {
         if (!jwtTokenProvider.isValidAndAdmin(request)) {
             throw new BadRequestException("Invalid token, or you're dont have access");
         }
