@@ -1,7 +1,7 @@
 package com.chubov.SpringTelegramBot.telegramBotStarter.controllers;
 
 import com.chubov.SpringTelegramBot.DTO.UserDTO;
-import com.chubov.SpringTelegramBot.configs.BotConfig;
+import com.chubov.SpringTelegramBot.telegramBotStarter.configs.BotConfig;
 import com.chubov.SpringTelegramBot.models.User;
 import com.chubov.SpringTelegramBot.services.UserService;
 import jakarta.validation.constraints.NotNull;

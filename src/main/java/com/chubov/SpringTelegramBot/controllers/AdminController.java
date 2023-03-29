@@ -3,6 +3,8 @@ package com.chubov.SpringTelegramBot.controllers;
 
 import com.chubov.SpringTelegramBot.DTO.UserDTO;
 import com.chubov.SpringTelegramBot.JWT.JwtTokenProvider;
+import com.chubov.SpringTelegramBot.services.MenuService;
+import com.chubov.SpringTelegramBot.services.RestaurantService;
 import com.chubov.SpringTelegramBot.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.BadRequestException;
@@ -21,26 +23,27 @@ public class AdminController {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
+    private final RestaurantService restaurantService;
+
+    private final MenuService menuService;
+
     private final JwtTokenProvider jwtTokenProvider;
+
     @Autowired
-    public AdminController(ModelMapper modelMapper, UserService userService, JwtTokenProvider jwtTokenProvider) {
+    public AdminController(ModelMapper modelMapper, UserService userService, RestaurantService restaurantService, MenuService menuService, JwtTokenProvider jwtTokenProvider) {
         this.modelMapper = modelMapper;
         this.userService = userService;
+        this.restaurantService = restaurantService;
+        this.menuService = menuService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
     //  Установка роли Customer
     //  Throws EntityNotFoundException
-    @PutMapping("/set-customer")
+    @PutMapping("/set-employee")
     @ResponseStatus(HttpStatus.OK)
-    public void setCustomer(@RequestBody UserDTO request) {
-        userService.setCustomer(request);
-    }
-
-    //  Создание меню/ каталога магазина
-    @PostMapping("/create-menu")
-    public void createMenu() {
-
+    public void setEmployee(@RequestBody UserDTO request) {
+        userService.setEmployee(request);
     }
 
     //  Создание категориии товаров в меню
@@ -83,7 +86,7 @@ public class AdminController {
             throw new BadRequestException("Invalid token, or you're dont have access");
         }
         Map<String, Integer> response = new HashMap<>();
-        response.put("count",userService.getCountUsers());
+        response.put("count", userService.getCountUsers());
         return response;
     }
 

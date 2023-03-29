@@ -132,11 +132,11 @@ public class UserService {
         return modelMapper.map(role, RoleDTO.class);
     }
 
-    public void setCustomer(UserDTO request) {
-        //  Найти юзера по ID, изменить его роль на Customer.
+    public void setEmployee(UserDTO request) {
+        //  Найти юзера по ID, изменить его роль на EMPLOYEE.
         Optional<User> user = getUser(request.getTelegramId());
         if (user.isPresent()) {
-            Set<Role> role = roleRepository.findByRoleName("CUSTOMER");
+            Set<Role> role = roleRepository.findByRoleName("EMPLOYEE");
             user.get().setRoles(role);
             userRepository.save(user.get());
             return;
