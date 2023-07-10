@@ -3,8 +3,6 @@ package com.chubov.SpringTelegramBot.controllers;
 
 import com.chubov.SpringTelegramBot.DTO.UserDTO;
 import com.chubov.SpringTelegramBot.JWT.JwtTokenProvider;
-import com.chubov.SpringTelegramBot.services.MenuService;
-import com.chubov.SpringTelegramBot.services.RestaurantService;
 import com.chubov.SpringTelegramBot.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.BadRequestException;
@@ -23,22 +21,22 @@ public class AdminController {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
-    private final RestaurantService restaurantService;
-
-    private final MenuService menuService;
+//    private final RestaurantService restaurantService;
+//
+//    private final MenuService menuService;
 
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public AdminController(ModelMapper modelMapper, UserService userService, RestaurantService restaurantService, MenuService menuService, JwtTokenProvider jwtTokenProvider) {
+    public AdminController(ModelMapper modelMapper, UserService userService, JwtTokenProvider jwtTokenProvider) {
         this.modelMapper = modelMapper;
         this.userService = userService;
-        this.restaurantService = restaurantService;
-        this.menuService = menuService;
+//        this.restaurantService = restaurantService;
+//        this.menuService = menuService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    //  Установка роли Customer
+    //  Установка роли Employee
     //  Throws EntityNotFoundException
     @PutMapping("/set-employee")
     @ResponseStatus(HttpStatus.OK)
@@ -65,7 +63,7 @@ public class AdminController {
     }
 
     //  Отправка сообщения всем клиентам (Рассылка)
-    //  Настроить сущьность сообщения (Картинка текст и прочее..)
+    //  Настроить сущность сообщения (Картинка текст и прочее..)
     //  Эта функция общается с telegram api/ callback-message / etc
     @PostMapping("/send-message-to-all-chat")
     public void sendMessageToAllChat(@RequestBody String text) {
@@ -90,7 +88,7 @@ public class AdminController {
         return response;
     }
 
-    //  Получить всех пользователей (ADMIN, CUSTOMER, USER)
+    //  Получить всех пользователей (ADMIN, Employee, USER)
     @GetMapping("/get-all-users")
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> getAllUsers() {

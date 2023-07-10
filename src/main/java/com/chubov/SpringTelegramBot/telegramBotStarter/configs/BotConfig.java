@@ -1,20 +1,21 @@
 package com.chubov.SpringTelegramBot.telegramBotStarter.configs;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
-@Configuration
+
 @Data
+@Component
+@AllArgsConstructor
+@NoArgsConstructor
 @PropertySource("classpath:application.properties")
 public class BotConfig {
-    @Value("${bot.name}")
-    String botName;
 
-    @Value("${bot.token}")
-    String botToken;
+    private String botName;
 
-//    @Value("${bot.chatId}")
-//    String botChatId;
+    private String botToken;
+
 }

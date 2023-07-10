@@ -6,6 +6,14 @@ spring.datasource.password=
 # Hibernate Setting
 spring.jpa.properties.hibernate.dialect=
 spring.jpa.properties.hibernate.show_sql=
+spring.jpa.properties.hibernate.hbm2ddl.auto=update
 # Telegram bot settinng
 bot.name=
 bot.token=
+
+bot.name2=
+bot.token2=
+
+bot.name3=
+bot.token3=
+

@@ -45,7 +45,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://09ac-94-181-145-67.eu.ngrok.io/"));
+        configuration.setAllowedOrigins(Arrays.asList("https://8c40-94-181-145-74.ngrok-free.app"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "content-type", "Access-Control-Allow-Origin"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "Access-Control-Allow-Origin"));

@@ -1,9 +1,9 @@
 package com.chubov.SpringTelegramBot.telegramBotStarter.controllers;
 
 import com.chubov.SpringTelegramBot.DTO.UserDTO;
-import com.chubov.SpringTelegramBot.telegramBotStarter.configs.BotConfig;
 import com.chubov.SpringTelegramBot.models.User;
 import com.chubov.SpringTelegramBot.services.UserService;
+import com.chubov.SpringTelegramBot.telegramBotStarter.configs.BotConfig;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -28,7 +28,6 @@ public class FoodTelegramBot extends TelegramLongPollingBot {
     final UserService userService;
 
     final ModelMapper modelMapper;
-
 
     @Autowired
     public FoodTelegramBot(BotConfig botConfig, UserService userService, ModelMapper modelMapper) {
@@ -63,7 +62,7 @@ public class FoodTelegramBot extends TelegramLongPollingBot {
         if (update.hasMessage()) {
             //  Id чата
             chatId = update.getMessage().getChatId();
-            //  Username пользователя @Test, без собаки
+            //  Username пользователя @TestUsername, без собаки
             username = update.getMessage().getFrom().getUserName();
             //  Имя пользователя
             firstName = update.getMessage().getFrom().getFirstName();
@@ -115,7 +114,7 @@ public class FoodTelegramBot extends TelegramLongPollingBot {
                 }
                 break;
             //  CUSTOMER functional
-            case "CUSTOMER":
+            case "EMPLOYEE":
                 break;
             //  USER functional
             case "USER":
